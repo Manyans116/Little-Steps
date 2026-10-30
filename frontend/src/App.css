@@ -236,3 +236,374 @@ a {
     padding: 25px;
   }
 }
+/* ================================
+   Parent Dashboard
+================================ */
+
+.dashboard-page {
+  min-height: 100vh;
+  background: #f7f9fc;
+}
+
+.dashboard-navbar {
+  height: 72px;
+  padding: 0 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-bottom: 1px solid #e9edf3;
+}
+
+.dashboard-brand {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #315cce;
+  text-decoration: none;
+}
+
+.logout-btn {
+  border: none;
+  background: #eef2ff;
+  color: #315cce;
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dashboard-container {
+  width: min(1180px, 92%);
+  margin: 0 auto;
+  padding: 45px 0;
+}
+
+.dashboard-welcome {
+  background: white;
+  border-radius: 24px;
+  padding: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  box-shadow: 0 8px 30px rgba(40, 55, 80, 0.06);
+}
+
+.dashboard-label {
+  color: #315cce;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+.dashboard-welcome h1 {
+  margin-bottom: 10px;
+}
+
+.dashboard-welcome p {
+  color: #6b7280;
+  margin-bottom: 0;
+}
+
+.dashboard-primary-btn,
+.dashboard-link-btn {
+  display: inline-block;
+  background: #315cce;
+  color: white;
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.dashboard-stat-card {
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  box-shadow: 0 6px 24px rgba(40, 55, 80, 0.05);
+}
+
+.dashboard-stat-card span {
+  font-size: 1.5rem;
+}
+
+.dashboard-stat-card h3 {
+  margin: 12px 0 3px;
+  font-size: 1.8rem;
+}
+
+.dashboard-stat-card p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.dashboard-content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.dashboard-main-card,
+.dashboard-side-card {
+  background: white;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 6px 24px rgba(40, 55, 80, 0.05);
+}
+
+.dashboard-main-card p {
+  color: #6b7280;
+  line-height: 1.7;
+  margin: 15px 0 25px;
+}
+
+.dashboard-side-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dashboard-side-card a {
+  text-decoration: none;
+  color: #374151;
+  padding: 12px;
+  border-radius: 10px;
+  background: #f7f9fc;
+}
+
+.dashboard-side-card a:hover {
+  color: #315cce;
+}
+
+@media (max-width: 768px) {
+  .dashboard-welcome {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* ================================
+   Find Childcare
+================================ */
+
+.childcare-page {
+  min-height: 100vh;
+  background: #f7f9fc;
+}
+
+.back-dashboard {
+  color: #315cce;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.childcare-container {
+  width: min(1180px, 92%);
+  margin: 0 auto;
+  padding: 45px 0;
+}
+
+.childcare-heading {
+  margin-bottom: 30px;
+}
+
+.childcare-heading h1 {
+  margin-bottom: 8px;
+}
+
+.childcare-heading > p:last-child {
+  color: #6b7280;
+}
+
+.search-panel {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  box-shadow: 0 6px 24px rgba(40, 55, 80, 0.05);
+}
+
+.search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f7f9fc;
+  border: 1px solid #e5e7eb;
+  padding: 12px 15px;
+  border-radius: 12px;
+}
+
+.search-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.95rem;
+}
+
+.filter-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-weight: 600;
+  color: #374151;
+}
+
+.filter-check input {
+  width: 17px;
+  height: 17px;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 35px 0 20px;
+}
+
+.results-header h2 {
+  margin: 0;
+}
+
+.results-header span {
+  color: #6b7280;
+}
+
+.childcare-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.childcare-card {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(40, 55, 80, 0.05);
+}
+
+.childcare-image {
+  height: 150px;
+  background: #eef2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+}
+
+.childcare-card-body {
+  padding: 22px;
+}
+
+.center-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.center-title-row h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.verified-badge {
+  background: #e8f7ee;
+  color: #198754;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.center-location {
+  color: #6b7280;
+  margin: 8px 0;
+}
+
+.center-rating {
+  font-weight: 700;
+}
+
+.center-rating span {
+  color: #6b7280;
+  font-weight: 400;
+  margin-left: 5px;
+}
+
+.center-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 18px 0;
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+.view-center-btn {
+  width: 100%;
+  border: none;
+  background: #315cce;
+  color: white;
+  padding: 11px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.view-center-btn:hover {
+  opacity: 0.9;
+}
+
+.no-results {
+  text-align: center;
+  padding: 70px 20px;
+  background: white;
+  border-radius: 18px;
+}
+
+.no-results div {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.no-results p {
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .search-panel {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .childcare-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .results-header {
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

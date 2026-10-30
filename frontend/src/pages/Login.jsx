@@ -1,107 +1,126 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        formData
+      );
+
+      const { token, user } = response.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      if (user.role === "admin") {
+  navigate("/admin-dashboard");
+} else if (user.role === "provider") {
+  navigate("/provider-dashboard");
+} else {
+  navigate("/parent-dashboard");
+}
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Login failed. Please check your details."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="auth-page">
-      <div className="container">
-        <div className="row justify-content-center align-items-center min-vh-100">
+      <div className="auth-card">
+        <div className="text-center mb-4">
+          <Link to="/" className="auth-brand">
+            Little Steps
+          </Link>
 
-          <div className="col-md-6 col-lg-5">
+          <h1>Welcome back</h1>
+          <p>Login to continue to your Little Steps account.</p>
+        </div>
 
-            <div className="auth-card">
+        {error && (
+          <div className="alert alert-danger">
+            {error}
+          </div>
+        )}
 
-              <div className="text-center mb-4">
-                <div className="auth-logo">👣</div>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label">Email</label>
 
-                <h2 className="fw-bold mt-2">
-                  Welcome Back
-                </h2>
-
-                <p className="text-muted">
-                  Sign in to your Little Steps account
-                </p>
-              </div>
-
-              <form>
-
-                <div className="mb-3">
-                  <label className="form-label">
-                    Email Address
-                  </label>
-
-                  <input
-                    type="email"
-                    className="form-control form-control-lg"
-                    placeholder="Enter your email"
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">
-                    Password
-                  </label>
-
-                  <input
-                    type="password"
-                    className="form-control form-control-lg"
-                    placeholder="Enter your password"
-                  />
-                </div>
-
-                <div className="d-flex justify-content-between mb-4">
-
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      id="remember"
-                    />
-
-                    <label
-                      className="form-check-label"
-                      htmlFor="remember"
-                    >
-                      Remember me
-                    </label>
-                  </div>
-
-                  <a href="#" className="small">
-                    Forgot password?
-                  </a>
-
-                </div>
-
-                <button
-                  type="submit"
-                  className="btn btn-primary btn-lg w-100"
-                >
-                  Login
-                </button>
-
-              </form>
-
-              <div className="text-center mt-4">
-
-                <span className="text-muted">
-                  Don't have an account?{" "}
-                </span>
-
-                <Link to="/register">
-                  Create Account
-                </Link>
-
-              </div>
-
-              <div className="text-center mt-3">
-                <Link to="/" className="small text-muted">
-                  ← Back to Home
-                </Link>
-              </div>
-
-            </div>
-
+            <input
+              type="email"
+              name="email"
+              className="form-control"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
           </div>
 
+          <div className="mb-4">
+            <label className="form-label">Password</label>
+
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="btn btn-primary w-100"
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+
+        <div className="text-center mt-4">
+          <p>
+            Don't have an account?{" "}
+            <Link to="/register">Create an account</Link>
+          </p>
+
+          <Link to="/" className="back-home">
+            ← Back to Home
+          </Link>
         </div>
       </div>
     </div>
