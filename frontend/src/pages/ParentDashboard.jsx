@@ -1,6 +1,8 @@
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 function ParentDashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -17,7 +19,7 @@ function ParentDashboard() {
 
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/bookings/parent/${user.id}`
+          `${API_BASE_URL}/api/bookings/parent/${user.id}`
         );
 
         setBookings(response.data.bookings || []);
@@ -46,12 +48,8 @@ function ParentDashboard() {
 
   return (
     <div className="dashboard-page">
-      {/* Navbar */}
       <nav className="dashboard-navbar">
-        <Link
-          to="/"
-          className="dashboard-brand"
-        >
+        <Link to="/" className="dashboard-brand">
           Little Steps
         </Link>
 
@@ -73,7 +71,6 @@ function ParentDashboard() {
       </nav>
 
       <main className="dashboard-container">
-        {/* Welcome */}
         <section className="dashboard-welcome">
           <div>
             <p className="dashboard-label">
@@ -91,34 +88,26 @@ function ParentDashboard() {
           </div>
         </section>
 
-        {/* Statistics */}
         <section className="dashboard-stats-grid">
           <div className="dashboard-stat-card">
             <span className="stat-icon">📅</span>
-
             <p>Total Bookings</p>
-
             <h2>{bookings.length}</h2>
           </div>
 
           <div className="dashboard-stat-card">
             <span className="stat-icon">⏳</span>
-
             <p>Pending Bookings</p>
-
             <h2>{pendingBookings.length}</h2>
           </div>
 
           <div className="dashboard-stat-card">
             <span className="stat-icon">✅</span>
-
             <p>Confirmed Bookings</p>
-
             <h2>{confirmedBookings.length}</h2>
           </div>
         </section>
 
-        {/* Quick Actions */}
         <section className="dashboard-content-grid mt-4">
           <div className="dashboard-main-card">
             <p className="dashboard-label">
@@ -159,7 +148,6 @@ function ParentDashboard() {
           </div>
         </section>
 
-        {/* Recent Bookings */}
         <section className="dashboard-main-card mt-4">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <div>
@@ -208,8 +196,7 @@ function ParentDashboard() {
 
                     <p>
                       📍{" "}
-                      {booking.childcareCenter
-                        ?.location ||
+                      {booking.childcareCenter?.location ||
                         "Location unavailable"}
                     </p>
                   </div>
@@ -218,8 +205,7 @@ function ParentDashboard() {
                     className={`badge ${
                       booking.status === "confirmed"
                         ? "text-bg-success"
-                        : booking.status ===
-                          "rejected"
+                        : booking.status === "rejected"
                         ? "text-bg-danger"
                         : "text-bg-warning"
                     }`}

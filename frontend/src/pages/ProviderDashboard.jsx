@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 function ProviderDashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -41,7 +42,7 @@ function ProviderDashboard() {
         const token = localStorage.getItem("token");
 
 const response = await axios.get(
-  `http://localhost:5000/api/bookings/provider/${user.id}`,
+  `${API_BASE_URL}/api/bookings/provider/${user.id}`,
   {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -75,7 +76,7 @@ const response = await axios.get(
 
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/childcare/provider/${user.id}`
+          `${API_BASE_URL}/api/childcare/provider/${user.id}`
         );
 
         setCenter(response.data);
@@ -125,7 +126,7 @@ const response = await axios.get(
       setCenterError("");
 
       const response = await axios.put(
-        `http://localhost:5000/api/childcare/provider/${user.id}`,
+        `${API_BASE_URL}/api/childcare/provider/${user.id}`,
         {
           name: centerForm.name,
           location: centerForm.location,
@@ -179,7 +180,7 @@ const response = await axios.get(
 const token = localStorage.getItem("token");
 
 const response = await axios.put(
-  `http://localhost:5000/api/bookings/${bookingId}/status`,
+ `${API_BASE_URL}/api/bookings/${bookingId}/status`,
   { status },
   {
     headers: {

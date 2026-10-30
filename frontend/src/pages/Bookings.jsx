@@ -1,6 +1,8 @@
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 function Bookings() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -20,14 +22,20 @@ function Bookings() {
       try {
         const token = localStorage.getItem("token");
 
-const response = await axios.get(
-  `http://localhost:5000/api/bookings/parent/${user.id}`,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+        if (!token) {
+          setError("Your login session has expired. Please log in again.");
+          setLoading(false);
+          return;
+        }
+
+        const response = await axios.get(
+          `${API_BASE_URL}/api/bookings/parent/${user.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         setBookings(response.data.bookings || []);
       } catch (err) {
@@ -150,179 +158,156 @@ const response = await axios.get(
 
         {/* Summary Cards */}
         {!loading && !error && (
-          <>
-            <section className="dashboard-stats-grid">
-              <div className="dashboard-stat-card">
-                <span className="stat-icon">📅</span>
+          <section className="dashboard-stats-grid">
+            <div className="dashboard-stat-card">
+              <span className="stat-icon">📅</span>
+              <p>Total Bookings</p>
+              <h2>{bookings.length}</h2>
+            </div>
 
-                <p>Total Bookings</p>
+            <div className="dashboard-stat-card">
+              <span className="stat-icon">⏳</span>
+              <p>Pending</p>
+              <h2>{pendingBookings.length}</h2>
+            </div>
 
-                <h2>{bookings.length}</h2>
-              </div>
+            <div className="dashboard-stat-card">
+              <span className="stat-icon">✅</span>
+              <p>Confirmed</p>
+              <h2>{confirmedBookings.length}</h2>
+            </div>
 
-              <div className="dashboard-stat-card">
-                <span className="stat-icon">⏳</span>
-
-                <p>Pending</p>
-
-                <h2>{pendingBookings.length}</h2>
-              </div>
-
-              <div className="dashboard-stat-card">
-                <span className="stat-icon">✅</span>
-
-                <p>Confirmed</p>
-
-                <h2>{confirmedBookings.length}</h2>
-              </div>
-
-              <div className="dashboard-stat-card">
-                <span className="stat-icon">❌</span>
-
-                <p>Rejected</p>
-
-                <h2>{rejectedBookings.length}</h2>
-              </div>
-            </section>
-          </>
+            <div className="dashboard-stat-card">
+              <span className="stat-icon">❌</span>
+              <p>Rejected</p>
+              <h2>{rejectedBookings.length}</h2>
+            </div>
+          </section>
         )}
 
         {/* No Bookings */}
-        {!loading &&
-          !error &&
-          bookings.length === 0 && (
-            <div className="dashboard-main-card text-center mt-4">
-              <h3>No bookings yet</h3>
+        {!loading && !error && bookings.length === 0 && (
+          <div className="dashboard-main-card text-center mt-4">
+            <h3>No bookings yet</h3>
 
-              <p>
-                You haven't made any childcare bookings
-                yet.
-              </p>
+            <p>
+              You haven't made any childcare bookings yet.
+            </p>
 
-              <Link
-                to="/find-childcare"
-                className="dashboard-primary-btn"
-              >
-                🔍 Find Childcare
-              </Link>
-            </div>
-          )}
+            <Link
+              to="/find-childcare"
+              className="dashboard-primary-btn"
+            >
+              🔍 Find Childcare
+            </Link>
+          </div>
+        )}
 
         {/* Booking List */}
-        {!loading &&
-          !error &&
-          bookings.length > 0 && (
-            <section className="dashboard-main-card mt-4">
-              <div className="mb-4">
-                <p className="dashboard-label">
-                  BOOKING HISTORY
-                </p>
+        {!loading && !error && bookings.length > 0 && (
+          <section className="dashboard-main-card mt-4">
+            <div className="mb-4">
+              <p className="dashboard-label">
+                BOOKING HISTORY
+              </p>
 
-                <h2>Your Bookings</h2>
-              </div>
+              <h2>Your Bookings</h2>
+            </div>
 
-              {bookings.map((booking) => (
-                <div
-                  key={booking._id}
-                  className="booking-item"
-                >
-                  {/* Booking Header */}
-                  <div className="d-flex justify-content-between align-items-start">
-                    <div>
-                      <h4>
-                        {booking.childcareCenter?.name ||
-                          "Childcare Center"}
-                      </h4>
+            {bookings.map((booking) => (
+              <div
+                key={booking._id}
+                className="booking-item"
+              >
+                {/* Booking Header */}
+                <div className="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h4>
+                      {booking.childcareCenter?.name ||
+                        "Childcare Center"}
+                    </h4>
 
-                      <p>
-                        📍{" "}
-                        {booking.childcareCenter
-                          ?.location ||
-                          "Location not available"}
-                      </p>
-                    </div>
-
-                    <span
-                      className={`badge ${getStatusClass(
-                        booking.status
-                      )}`}
-                    >
-                      {booking.status.toUpperCase()}
-                    </span>
+                    <p>
+                      📍{" "}
+                      {booking.childcareCenter?.location ||
+                        "Location not available"}
+                    </p>
                   </div>
 
-                  <hr />
+                  <span
+                    className={`badge ${getStatusClass(
+                      booking.status
+                    )}`}
+                  >
+                    {booking.status.toUpperCase()}
+                  </span>
+                </div>
 
-                  {/* Booking Information */}
-                  <div className="row">
-                    <div className="col-md-6">
-                      <p>
-                        👶 <strong>Child:</strong>{" "}
-                        {booking.childName}
-                      </p>
+                <hr />
 
-                      <p>
-                        🎂 <strong>Age:</strong>{" "}
-                        {booking.childAge} years
-                      </p>
+                {/* Booking Information */}
+                <div className="row">
+                  <div className="col-md-6">
+                    <p>
+                      👶 <strong>Child:</strong>{" "}
+                      {booking.childName}
+                    </p>
 
-                      <p>
-                        📅 <strong>Date:</strong>{" "}
-                        {new Date(
-                          booking.bookingDate
-                        ).toLocaleDateString(
-                          "en-IN"
-                        )}
-                      </p>
-                    </div>
+                    <p>
+                      🎂 <strong>Age:</strong>{" "}
+                      {booking.childAge} years
+                    </p>
 
-                    <div className="col-md-6">
-                      <p>
-                        🕐 <strong>Booking Type:</strong>{" "}
-                        {booking.bookingType}
-                      </p>
-
-                      <p>
-                        ⏱️ <strong>Hours:</strong>{" "}
-                        {booking.hours}
-                      </p>
-
-                      <p>
-                        💰 <strong>Total Amount:</strong>{" "}
-                        ₹{booking.totalAmount}
-                      </p>
-                    </div>
+                    <p>
+                      📅 <strong>Date:</strong>{" "}
+                      {new Date(
+                        booking.bookingDate
+                      ).toLocaleDateString("en-IN")}
+                    </p>
                   </div>
 
-                  {/* Status Information */}
-                  <div className="alert alert-light mt-3 mb-0">
-                    <strong>
-                      {booking.status === "confirmed"
-                        ? "Booking Confirmed"
-                        : booking.status ===
-                          "rejected"
-                        ? "Booking Rejected"
-                        : booking.status ===
-                          "completed"
-                        ? "Booking Completed"
-                        : booking.status ===
-                          "cancelled"
-                        ? "Booking Cancelled"
-                        : "Booking Pending"}
-                    </strong>
+                  <div className="col-md-6">
+                    <p>
+                      🕐 <strong>Booking Type:</strong>{" "}
+                      {booking.bookingType}
+                    </p>
 
-                    <br />
+                    <p>
+                      ⏱️ <strong>Hours:</strong>{" "}
+                      {booking.hours}
+                    </p>
 
-                    <small>
-                      {getStatusMessage(
-                        booking.status
-                      )}
-                    </small>
+                    <p>
+                      💰 <strong>Total Amount:</strong>{" "}
+                      ₹{booking.totalAmount}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </section>
-          )}
+
+                {/* Status Information */}
+                <div className="alert alert-light mt-3 mb-0">
+                  <strong>
+                    {booking.status === "confirmed"
+                      ? "Booking Confirmed"
+                      : booking.status === "rejected"
+                      ? "Booking Rejected"
+                      : booking.status === "completed"
+                      ? "Booking Completed"
+                      : booking.status === "cancelled"
+                      ? "Booking Cancelled"
+                      : "Booking Pending"}
+                  </strong>
+
+                  <br />
+
+                  <small>
+                    {getStatusMessage(booking.status)}
+                  </small>
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
 
         {/* Quick Actions */}
         {!loading && (

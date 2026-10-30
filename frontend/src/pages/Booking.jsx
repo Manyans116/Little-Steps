@@ -1,6 +1,8 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 function Booking() {
   const { id } = useParams();
@@ -25,7 +27,7 @@ function Booking() {
     const fetchCenter = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/childcare/${id}`
+          `${API_BASE_URL}/api/childcare/${id}`
         );
 
         setCenter(response.data);
@@ -76,30 +78,30 @@ function Booking() {
 
       const token = localStorage.getItem("token");
 
-if (!token) {
-  alert("Your login session has expired. Please log in again.");
-  navigate("/login");
-  return;
-}
+      if (!token) {
+        alert("Your login session has expired. Please log in again.");
+        navigate("/login");
+        return;
+      }
 
-await axios.post(
-  "http://localhost:5000/api/bookings",
-  {
-    parent: user.id,
-    childcareCenter: center._id,
-    childName: formData.childName,
-    childAge: Number(formData.childAge),
-    bookingType: formData.bookingType,
-    bookingDate: formData.bookingDate,
-    hours,
-    totalAmount,
-  },
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+      await axios.post(
+        `${API_BASE_URL}/api/bookings`,
+        {
+          parent: user.id,
+          childcareCenter: center._id,
+          childName: formData.childName,
+          childAge: Number(formData.childAge),
+          bookingType: formData.bookingType,
+          bookingDate: formData.bookingDate,
+          hours,
+          totalAmount,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       alert("Booking created successfully!");
 
@@ -147,7 +149,6 @@ await axios.post(
 
   return (
     <div className="dashboard-page">
-
       {/* NAVBAR */}
       <nav className="dashboard-navbar">
         <Link
@@ -167,16 +168,13 @@ await axios.post(
 
       {/* MAIN */}
       <main className="dashboard-container">
-
         <section className="dashboard-welcome">
           <div>
             <p className="dashboard-label">
               MAKE A BOOKING
             </p>
 
-            <h1>
-              Book Childcare 📅
-            </h1>
+            <h1>Book Childcare 📅</h1>
 
             <p>
               Fill in the details below to make your
@@ -192,16 +190,11 @@ await axios.post(
         )}
 
         <div className="dashboard-content-grid">
-
           {/* BOOKING FORM */}
           <div className="dashboard-main-card">
-
-            <h2>
-              Booking Details
-            </h2>
+            <h2>Booking Details</h2>
 
             <form onSubmit={handleSubmit}>
-
               <div className="mb-3">
                 <label className="form-label">
                   Child Name
@@ -248,17 +241,9 @@ await axios.post(
                   onChange={handleChange}
                   required
                 >
-                  <option value="hourly">
-                    Hourly
-                  </option>
-
-                  <option value="daily">
-                    Daily
-                  </option>
-
-                  <option value="monthly">
-                    Monthly
-                  </option>
+                  <option value="hourly">Hourly</option>
+                  <option value="daily">Daily</option>
+                  <option value="monthly">Monthly</option>
                 </select>
               </div>
 
@@ -305,36 +290,21 @@ await axios.post(
                   ? "Creating Booking..."
                   : "Confirm Booking"}
               </button>
-
             </form>
           </div>
 
           {/* CENTER SUMMARY */}
           <div className="dashboard-side-card">
-
-            <h3>
-              Childcare Center
-            </h3>
+            <h3>Childcare Center</h3>
 
             <h4 className="mt-3">
               {center?.name}
             </h4>
 
-            <p>
-              📍 {center?.location}
-            </p>
-
-            <p>
-              🕐 {center?.timing}
-            </p>
-
-            <p>
-              👶 {center?.ageGroup}
-            </p>
-
-            <p>
-              💰 ₹{center?.pricePerHour} / hour
-            </p>
+            <p>📍 {center?.location}</p>
+            <p>🕐 {center?.timing}</p>
+            <p>👶 {center?.ageGroup}</p>
+            <p>💰 ₹{center?.pricePerHour} / hour</p>
 
             <p>
               🪑 Available Slots:{" "}
@@ -346,9 +316,7 @@ await axios.post(
             <Link to="/find-childcare">
               ← Choose another center
             </Link>
-
           </div>
-
         </div>
       </main>
     </div>

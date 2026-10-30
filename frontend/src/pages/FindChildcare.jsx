@@ -1,6 +1,8 @@
+
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 function FindChildcare() {
   const navigate = useNavigate();
@@ -14,7 +16,7 @@ function FindChildcare() {
     const fetchChildcareCenters = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/childcare"
+          `${API_BASE_URL}/api/childcare`
         );
 
         setChildcareCenters(response.data.centers);
@@ -162,9 +164,11 @@ function FindChildcare() {
                     </div>
 
                     <button
-			className="view-center-btn"
-                       onClick={() => navigate(`/childcare/${center._id}`)}
-		    >
+                      className="view-center-btn"
+                      onClick={() =>
+                        navigate(`/childcare/${center._id}`)
+                      }
+                    >
                       View Details
                     </button>
                   </div>

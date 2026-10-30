@@ -1,6 +1,8 @@
+
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 function ChildcareDetails() {
   const { id } = useParams();
@@ -14,13 +16,12 @@ function ChildcareDetails() {
     const fetchCenter = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/childcare/${id}`
+          `${API_BASE_URL}/api/childcare/${id}`
         );
 
         setCenter(response.data);
       } catch (err) {
         console.error("Error fetching childcare center:", err);
-
         setError("Unable to load childcare center details.");
       } finally {
         setLoading(false);
@@ -140,11 +141,11 @@ function ChildcareDetails() {
             </div>
 
             <button
-  className="view-center-btn"
-  onClick={() => navigate(`/booking/${center._id}`)}
->
-  Book This Center
-</button>
+              className="view-center-btn"
+              onClick={() => navigate(`/booking/${center._id}`)}
+            >
+              Book This Center
+            </button>
           </div>
         </div>
       </main>
